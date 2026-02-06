@@ -11,7 +11,6 @@ function App() {
               <li><a href="#pizza">Пицца</a></li>
               <li><a href="#sushi">Суши и роллы</a></li>
               <li><a href="#drinks">Напитки</a></li>
-              <li><a href="#delivery">Доставка и оплата</a></li>
             </ul>
           </nav>
 
@@ -28,7 +27,11 @@ function App() {
         <main className="main">
           <section className="heroSection">
             <div className="heroContent">
-              <h1 className="heroTitle">ЗДЕСЬ ВКУСНАЯ ЕДА</h1>
+              <section className="heroTitle">
+								<span>ЗДЕСЬ</span>
+								<span>ВКУСНАЯ</span>
+								<span>ЕДА</span>
+							</section>
               <p className="heroSubtitle">Вкусная.Сочная.Свежая.</p>
             </div>
 

@@ -1,5 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
 
+* {
+	padding: 0;
+	margin: 0;
+}
+
+.header {
+	display: flex;
+	justify-content: space-around;
+}
 .mainNav a {
 	text-decoration: none;
 	color: inherit;
@@ -14,15 +23,31 @@
 	list-style-type: none;
 	color: black;
 	font-weight: bold;
+	display: flex;
 }
 .cartLink {
 	background-color: rgb(253, 0, 152);
-	border: 0cm;
-	border-radius: 15px;
+	border: 0;
 	font-family: "Raleway", sans-serif;
 	color: white;
 }
 
-.cartLink a:hover {
-	font-weight: bold;
+.cartLink:hover {
+	box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+	background-color: rgb(240, 0, 140);
+}
+
+.heroSection {
+	display: flex;
+}
+
+.heroContent {
+	font-family: "Raleway", sans-serif;
+}
+
+.heroTitle {
+	align-content: ;
+	font-family: "Raleway", sans-serif;
+	font-weight: bolder;
+	font-size: xx-large;
 }
