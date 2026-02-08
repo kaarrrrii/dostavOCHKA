@@ -1,10 +1,26 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 
-function Header({ navItems }) {
+function Header({
+  navItems,
+  searchQuery,
+  onSearchChange,
+  onSearchSubmit,
+  onNavigateByAnchor,
+  onOpenHome,
+  onOpenProfile,
+  onOpenCart,
+  cartCount = 0,
+  keepFullHeader = false,
+}) {
   const [isCompact, setIsCompact] = useState(false);
   const fullNavItems = [...navItems, { href: '#promo', label: 'Акции' }];
 
   useEffect(() => {
+    if (keepFullHeader) {
+      setIsCompact(false);
+      return undefined;
+    }
+
     const banner = document.querySelector('.bannerSlider');
 
     if (!banner) {
@@ -37,7 +53,6 @@ function Header({ navItems }) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        // Пока баннер хотя бы частично виден — оставляем двойной header.
         setIsCompact(!entry.isIntersecting);
       },
       {
@@ -51,13 +66,23 @@ function Header({ navItems }) {
     return () => {
       observer.disconnect();
     };
-  }, []);
+  }, [keepFullHeader]);
 
   return (
-    <header className={`header ${isCompact ? 'headerCompact' : ''}`}>
+    <header className={`header ${isCompact && !keepFullHeader ? 'headerCompact' : ''}`}>
       <div className="headerFull">
         <div className="headerTop">
-          <a href="#" className="brandLink" aria-label="Сюрикен">
+          <a
+            href="#"
+            className="brandLink"
+            aria-label="Сюрикен"
+            onClick={(event) => {
+              event.preventDefault();
+              if (onOpenHome) {
+                onOpenHome();
+              }
+            }}
+          >
             <span className="navIcon brandIcon" aria-hidden="true" />
             <span className="brandName">Shuriken</span>
           </a>
@@ -66,18 +91,33 @@ function Header({ navItems }) {
             <a className="phoneLink" href="tel:+75943242129" aria-label="Позвонить в доставку">
               +7 (594) 324-21-29
             </a>
-            <form className="headerSearch" role="search" onSubmit={(event) => event.preventDefault()}>
-              <input type="search" placeholder="Поиск по меню" aria-label="Поиск по меню" />
-              <button type="submit">Найти</button>
+            <form
+              className="headerSearch"
+              role="search"
+              onSubmit={(event) => {
+                event.preventDefault();
+                if (onSearchSubmit) {
+                  onSearchSubmit(searchQuery);
+                }
+              }}
+            >
+              <input
+                type="search"
+                placeholder="Поиск по меню"
+                aria-label="Поиск по меню"
+                value={searchQuery}
+                onChange={(event) => onSearchChange(event.target.value)}
+              />
             </form>
           </div>
 
           <div className="headerActions">
-            <button className="profileLink" aria-label="Профиль">
+            <button className="profileLink" aria-label="Профиль" onClick={onOpenProfile}>
               Профиль
             </button>
-            <button className="cartLink" aria-label="Корзина">
+            <button className="cartLink" aria-label="Корзина" onClick={onOpenCart}>
               Корзина
+              {cartCount > 0 && <span className="cartCount">| {cartCount}</span>}
             </button>
           </div>
         </div>
@@ -86,7 +126,17 @@ function Header({ navItems }) {
           <ul className="catalogNavList">
             {fullNavItems.map(({ href, label }) => (
               <li key={href}>
-                <a href={href}>{label}</a>
+                <a
+                  href={href}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    if (onNavigateByAnchor) {
+                      onNavigateByAnchor(href);
+                    }
+                  }}
+                >
+                  {label}
+                </a>
               </li>
             ))}
           </ul>
@@ -94,7 +144,17 @@ function Header({ navItems }) {
       </div>
 
       <div className="headerCompactBar">
-        <a href="#" className="brandLink" aria-label="Сюрикен">
+        <a
+          href="#"
+          className="brandLink"
+          aria-label="Сюрикен"
+          onClick={(event) => {
+            event.preventDefault();
+            if (onOpenHome) {
+              onOpenHome();
+            }
+          }}
+        >
           <span className="navIcon brandIcon" aria-hidden="true" />
           <span className="brandName">Shuriken</span>
         </a>
@@ -103,18 +163,29 @@ function Header({ navItems }) {
           <ul className="compactNavList">
             {fullNavItems.map(({ href, label }) => (
               <li key={`compact-${href}`}>
-                <a href={href}>{label}</a>
+                <a
+                  href={href}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    if (onNavigateByAnchor) {
+                      onNavigateByAnchor(href);
+                    }
+                  }}
+                >
+                  {label}
+                </a>
               </li>
             ))}
           </ul>
         </nav>
 
         <div className="headerActions">
-          <button className="profileLink" aria-label="Профиль">
+          <button className="profileLink" aria-label="Профиль" onClick={onOpenProfile}>
             Профиль
           </button>
-          <button className="cartLink" aria-label="Корзина">
+          <button className="cartLink" aria-label="Корзина" onClick={onOpenCart}>
             Корзина
+            {cartCount > 0 && <span className="cartCount">| {cartCount}</span>}
           </button>
         </div>
       </div>
